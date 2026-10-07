@@ -62,7 +62,7 @@ export default function Decisions({ decisions, epics }: { decisions: Decision[];
           </div>
         ))}
       </section>
-      <p className="text-xs text-neutral-500">Approvals are written as Jira comments under the acting user's token, with the approver's name in the text. Attribution to the real clicker comes with the Atlassian OAuth follow-up.</p>
+      <p className="text-xs text-neutral-500">Approvals are written as Jira comments under the acting user&apos;s token, with the approver&apos;s name in the text. Attribution to the real clicker comes with the Atlassian OAuth follow-up.</p>
     </div>
   );
 }

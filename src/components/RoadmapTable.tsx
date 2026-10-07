@@ -26,13 +26,15 @@ export default function RoadmapTable({ initial }: { initial: View }) {
 
   // Recompute cutline client-side from the current order.
   const cut = useMemo(() => {
-    let cum = 0;
-    return order.map((k) => {
+    const out: { key: string; above: boolean; cum: number }[] = [];
+    order.reduce((cum, k) => {
       const e = byKey.get(k)!;
       const counts = !["Deprioritized", "Done"].includes(e.roadmap.status) && e.statusCategory !== "Done";
-      if (counts) cum += e.remainingHours;
-      return { key: k, above: counts && cum <= view.teamNetHrs, cum: Math.round(cum * 10) / 10 };
-    });
+      const next = counts ? cum + e.remainingHours : cum;
+      out.push({ key: k, above: counts && next <= view.teamNetHrs, cum: Math.round(next * 10) / 10 });
+      return next;
+    }, 0);
+    return out;
   }, [order, byKey, view.teamNetHrs]);
   const demand = cut.filter((c) => c.above).reduce((a, c) => a + byKey.get(c.key)!.remainingHours, 0);
 
